@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>blogs</title>
+    </head>
+
+    <body>
+        <h1>Add a blog</h1>
+
+        <form id="blogs_form" method="post" action="/blogs/add_blog/">
+
+            {% csrf_token %}
+
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }}
+            {% endfor %}
+
+            <input type="submit" name="submit" value="Add blog" />
+        </form>
+    </body>
+
+</html>

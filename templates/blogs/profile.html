@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>blogs</title>
+    </head>
+
+    <body>
+
+        <strong>Alias: </strong>{{user.alias}}<br>
+        <strong>Username: </strong>{{user.user.username}}<br>
+        <strong>email: </strong>{{user.user.email}}<br>
+
+        {% for i in list_blogs %}
+
+        <strong>title: </strong><a href="/blogs/blog/{{ i.slug }}">{{i.title}}</a><br>
+
+
+        {% endfor %}
+
+    </body>
+</html>
