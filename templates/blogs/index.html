@@ -15,14 +15,20 @@
             <a href="/blogs/restricted/">Restricted Page</a><br />
             <a href="/blogs/logout/">Logout</a><br />
             <a href="/blogs/add_blog/">Add a New blog</a><br />
-            <a href="/blogs/user/{{profile.alias}}">Profile</a>
+            <a href="/blogs/user/{{profile.alias}}">Profile</a><br>
 
+            <strong>List of blogs: </strong>
+            {% for i in list_blogs %}
+
+                <br><a href="/blogs/blog/{{ i.slug }}">{{i.title}}</a><br>
+
+            {% endfor %}<br>
 
         {% else %}
             <a href="/blogs/register/">Register Here</a><br />
             <a href="/blogs/login/">Login</a><br />
 
-
         {% endif %}
+
     </body>
 </html>

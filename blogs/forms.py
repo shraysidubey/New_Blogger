@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from blogs.models import blog,UserProfile
+from blogs.models import blog,UserProfile, Comment_on_blog
 from django import forms
 from django import forms
 from django import forms
@@ -16,7 +16,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ('user',)
+        exclude = ('user','follows',)
 
 
 class BlogForm(forms.ModelForm):
@@ -29,5 +29,11 @@ class BlogForm(forms.ModelForm):
         model = blog
         fields = ('title', 'body',)
 
+class Comment_on_blogForm(forms.ModelForm):
+    comment = forms.CharField(max_length=500)
+
+    class Meta:
+        model = Comment_on_blog
+        fields = ('comment',)
 
 

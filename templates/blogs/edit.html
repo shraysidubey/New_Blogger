@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+        <form id="details_form" method="post" action="/blogs/blog/{{blog_slug}}/">
+
+            {% csrf_token %}
+
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }}
+            {% endfor %}
+
+            <input type="submit" name="blog_submit" value="save" />
+        </form>
+
+
+    </body>
+</html>

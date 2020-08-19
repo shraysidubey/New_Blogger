@@ -6,13 +6,60 @@
 
     </head>
 
+        <script>
+            function sendDelete(event){
+                var xhttp = new XMLHttpRequest();
+                event.preventDefault();
+                xhttp.open("DELETE", "");
+                xhttp.send();
+                window.location.href = "/blogs";
+            }
+        </script>
+
     <body>
 
-     <a>{{ blog_title }}</a><br>
+        <a>{{ blog_title }}</a><br>
+
+        <a>{{ blog_body }}</a><br>
+
+        <a href="/blogs/blog/{{blog_slug}}" onclick="sendDelete(event)"><button> Delete </button></a>
+
+        <form id="edit_button" method="post" action="/blogs/blog/{{ blog_slug }}/">
+            {% csrf_token %}
+            <input type="submit" name="edit_submit" value="edit" />
+
+        </form>
+
+            {% if Does_like %}
+                <a href="/blogs/Like/{{user.id}}/{{ blog_id }}"><button> Unlike </button></a>
+            {% else %}
+                <a href="/blogs/Like/{{user.id}}/{{ blog_id }}"><button> like </button></a>
+            {% endif %}<br>
+
+            {% for comments in Blog.comment %}
+            <a href="/blogs/blog/{{blog_slug}}">Comments:{{ comments.comment }}</a>
+            {% endfor %}
 
 
-    <a>{{ blog_body }}</a>
+                <strong>List of comments: </strong>
+                {% for j in list_of_comments %}<br>
+
+                    {{ j.comment }}<br>
+
+                {% endfor %}
+
+        <form id="comment_button" method="post" action="/blogs/blog/{{ blog_slug }}/">
+            {% csrf_token %}
+
+
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }}
+            {% endfor %}
+            <input type="submit" name="comment_submit" value="comment" />
+
+        </form>
 
     </body>
-
 </html>

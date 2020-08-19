@@ -10,12 +10,34 @@
         <strong>Username: </strong>{{user.user.username}}<br>
         <strong>email: </strong>{{user.user.email}}<br>
 
+        <strong>List of blogs: </strong>
         {% for i in list_blogs %}
 
-        <strong>title: </strong><a href="/blogs/blog/{{ i.slug }}">{{i.title}}</a><br>
+                <br><a href="/blogs/blog/{{ i.slug }}">{{i.title}}</a>
 
+        {% endfor %}<br>
 
-        {% endfor %}
+        <strong>List of following: </strong>
+        {% for j in following %}
+
+                <br><a href="/blogs/user/{{profile.alias}}{{j.alias}}">{{j.alias}}</a>
+
+        {% endfor %}<br>
+
+        <strong>List of followers: </strong>
+        {% for k in followers %}
+
+                <br><a href="/blogs/user/{{profile.alias}}{{k.alias}}">{{k.alias}}</a>
+
+        {% endfor %}<br>
+
+        {% if user.id != logged_in_userprofile.id %}
+            {% if is_following %}
+                <a href="/blogs/follows/{{user.id}}/{{ logged_in_userprofile.id }}"><button> Unfollow </button></a>
+            {% else %}
+                <a href="/blogs/follows/{{user.id}}/{{ logged_in_userprofile.id }}"><button> Follow </button></a>
+            {% endif %}
+        {% endif %}
 
     </body>
 </html>
