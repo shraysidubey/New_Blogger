@@ -266,3 +266,8 @@ def like_blog(request, user_id, blog_id):
 
     except UserProfile.DoesNotExist:
         print('DoesNotExist exception')
+
+def delete_comment(request, comment_id, blog_slug):
+    comment = Comment_on_blog.objects.get(id=comment_id)
+    comment.delete()
+    return redirect('/blogs/blog/' + blog_slug + '/')
