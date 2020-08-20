@@ -9,7 +9,6 @@ from blogs.models import UserProfile
 from blogs.models import blog, Comment_on_blog
 import django.forms.widgets
 
-
 def index(request):
 
     context_dict = {'boldmessage': "Comes to world of blogs"}
@@ -31,18 +30,18 @@ def register(request):
 
     registered = False
 
-    if request.method == 'POST':
+    if request.method == 'POST':                                              #request method is post
 
-        user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
+        user_form = UserForm(data=request.POST)                               #fetch form
+        profile_form = UserProfileForm(data=request.POST)                     #fetch form
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
+        if user_form.is_valid() and profile_form.is_valid():                  #check user is valid or not
+            user = user_form.save()                                           #save
 
-            user.set_password(user.password)
+            user.set_password(user.password)                                  #passwoed set for user
             user.save()
 
-            profile = profile_form.save(commit=False)
+            profile = profile_form.save(commit=False)                         #for save
             profile.user = user
 
             profile.save()
@@ -54,37 +53,36 @@ def register(request):
 
 
     else:
-        user_form = UserForm()
+        user_form = UserForm()                                          #display form
         profile_form = UserProfileForm()
 
     return render(request,
-            'blogs/register.html',
+            'blogs/register.html',                                       #redirect in registered page (html)
             {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 
 def user_login(request):
 
-    if request.method == 'POST':
+    if request.method == 'POST':                                                 #user is gged i
 
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
+        user = authenticate(username=username, password=password)                #check authenticate
 
         if user:
-            if user.is_active:
+            if user.is_active:                                                  #check conditions
 
                 login(request, user)
-                return HttpResponseRedirect('/blogs/')
+                return HttpResponseRedirect('/blogs/')                            #redirect on page
             else:
-                return HttpResponse("Your blogs account is disabled.")
+                return HttpResponse("Your blogs account is disabled.")             #if its not active this string will display
         else:
             print "Invalid login details: {0}, {1}".format(username, password)
             return HttpResponse("Invalid login details supplied.")
-
     else:
+        return render(request, 'blogs/login.html', {})                            #return to this page
 
-        return render(request, 'blogs/login.html', {})
 
 def some_view(request):
     if not request.user.is_authenticated():
@@ -100,54 +98,50 @@ def restricted(request):
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
 def user_logout(request):
-    # Since we know the user is logged in, we can now just log them out.
-    logout(request)
-
-    # Take the user back to the homepage.
-    return HttpResponseRedirect('/blogs/')
-
+    logout(request)                                     # Since we know the user is logged in, we can now just log them out.
+    return HttpResponseRedirect('/blogs/')              #Take the user back to the page
 
 def add_blog(request):
     if request.method == 'POST':
-        form = BlogForm(request.POST)
+        form = BlogForm(request.POST)                      #fetch form
 
-        if form.is_valid():
-            user_profile = UserProfile.objects.get(user= request.user.id)
-            blog = form.save(commit=False)
-            blog.created_by = user_profile
-            blog.save()
+        if form.is_valid():                              #check if form is valid
+            user_profile = UserProfile.objects.get(user= request.user.id)           #get the UserProfile objects
+            blog = form.save(commit=False)                                          #save the form
+            blog.created_by = user_profile                                          #update the userprofile id in created_byh idea
+            blog.save()                                                             #save
 
-            return index(request)
+            return index(request)                                                   #take back to index page
         else:
             print form.errors
     else:
-        form = BlogForm()
+        form = BlogForm()                                                            ##use in render a page
 
-    return render(request, 'blogs/add_blog.html', {'form': form})
+    return render(request, 'blogs/add_blog.html', {'form': form})                    #render in this page
 
 def profile(request, alias):
 
-    context_dict = {}
+    context_dict = {}                                                               #declare dictionary
 
     try:
-        user_Profile = UserProfile.objects.get(alias=alias)
-        context_dict['user'] = user_Profile
+        user_Profile = UserProfile.objects.get(alias=alias)                        #get object from UserProfile
+        context_dict['user'] = user_Profile                                        #keu used in html and get the data
 
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
-        blogs = blog.objects.filter(created_by=user_Profile.id)
+        blogs = blog.objects.filter(created_by=user_Profile.id)                   #getobject from blog
         context_dict['list_blogs'] = blogs
 
-        following = user_Profile.follows.all()
+        following = user_Profile.follows.all()                                     #get list of following (to whom loggedin user follows)
         context_dict['following'] = following
 
-        followers = user_Profile.userprofile_set.all()
+        followers = user_Profile.userprofile_set.all()                             #get list of followers
         context_dict['followers'] = followers
 
-        logged_in_userprofile = UserProfile.objects.get(user=request.user.id)
+        logged_in_userprofile = UserProfile.objects.get(user=request.user.id)      #get the user_id
         context_dict['logged_in_userprofile'] = logged_in_userprofile
 
-        is_following = logged_in_userprofile in followers
+        is_following = logged_in_userprofile in followers                          #check logged_in_user is +nt in lkst of following
         context_dict['is_following'] = is_following
 
     except UserProfile.DoesNotExist:
@@ -199,22 +193,22 @@ def blog_detail(request, blog_slug):
             if form.is_valid():                                              #check if form is valid
                 user_profile = UserProfile.objects.get(user=request.user.id)  #get user id
                 Blog = form.save(commit=False)                                #save thr form
-                Blog.created_by = user_profile                                #create the connection b/w
+                Blog.created_by = user_profile                                #pdate the userprofile id in created_byh idea
                 #print(Blog.body)
                 #print("saved")
                 Blog.save()                                                  #use to save the blog
 
-                context_dict['blog_body'] = Blog.body
+                context_dict['blog_body'] = Blog.body                        #get bodytite................??
                 context_dict['blog_title'] = Blog.title
                 context_dict['blog_slug'] = Blog.slug
                 context_dict['blog_id'] = Blog.id
 
-        if request.method == 'POST' and "comment_submit" in request.POST:   # condition when post request is there and form is blogsubmit
-            form = Comment_on_blogForm(request.POST)  # fetch form
+        if request.method == 'POST' and "comment_submit" in request.POST:   #condition when post request is there and form is blogsubmit
+            form = Comment_on_blogForm(request.POST)                        #fetch form
             if form.is_valid():
-                comment = form.save(commit=False)
-                comment.blogg = Blog
-                comment.user = user_profile
+                comment = form.save(commit=False)                           #save form
+                comment.blogg = Blog                                        #update the Blog id in blogg
+                comment.user = user_profile                                 #update the user_profile id in user
                 print("comment getting saved")
                 comment.save()
 
@@ -232,9 +226,9 @@ def follow(request, userprofile_id, loggedin_userprofile_id):
     try:
         userprofile = UserProfile.objects.get(id=userprofile_id)
 
-        loggedin_userprofile = UserProfile.objects.get(id=loggedin_userprofile_id)
+        loggedin_userprofile = UserProfile.objects.get(id=loggedin_userprofile_id)  #
 
-        following = loggedin_userprofile.follows.all() #userProfiles whom loggedin user is following
+        following = loggedin_userprofile.follows.all()                              #userProfiles to whom loggedin user is following
 
         if userprofile in following:
             loggedin_userprofile.follows.remove(userprofile)

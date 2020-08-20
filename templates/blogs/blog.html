@@ -4,6 +4,7 @@
     <head>
         <title>blogs</title>
 
+
     </head>
 
         <script>
@@ -16,11 +17,19 @@
             }
         </script>
 
-    <body>
+    <body style="background-color:DarkGray;">
 
-        <a>{{ blog_title }}</a><br>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <u>
+                <h3 class="panel-title">{{ blog_title }}</h3></u>
 
-        <a>{{ blog_body }}</a><br>
+        </div>
+    </div>
+        <div class="container-fluid">
+
+            <a>{{ blog_body }}</a><br>
+        </div>
 
         <a href="/blogs/blog/{{blog_slug}}" onclick="sendDelete(event)"><button> Delete </button></a>
 

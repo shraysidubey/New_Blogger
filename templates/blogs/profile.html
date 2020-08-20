@@ -4,32 +4,30 @@
         <title>blogs</title>
     </head>
 
-    <body>
+    <body style="background-color:DarkGray;">
 
-        <strong>Alias: </strong>{{user.alias}}<br>
+        <p><strong>Alias: </strong>{{user.alias}}<br>
         <strong>Username: </strong>{{user.user.username}}<br>
-        <strong>email: </strong>{{user.user.email}}<br>
+            <strong>email: </strong>{{user.user.email}}<br></p>
 
-        <strong>List of blogs: </strong>
-        {% for i in list_blogs %}
+        <p><strong>List of blogs: </strong>
+        {% for i in list_blogs %}<br>
+                <a href="/blogs/blog/{{ i.slug }}">{{i.title}}</a>
+            {% endfor %}<br></p>
 
-                <br><a href="/blogs/blog/{{ i.slug }}">{{i.title}}</a>
-
-        {% endfor %}<br>
-
-        <strong>List of following: </strong>
+        <p><strong>List of following: </strong>
         {% for j in following %}
 
                 <br><a href="/blogs/user/{{profile.alias}}{{j.alias}}">{{j.alias}}</a>
 
-        {% endfor %}<br>
+            {% endfor %}</p><br>
 
-        <strong>List of followers: </strong>
+        <p><strong>List of followers: </strong>
         {% for k in followers %}
 
                 <br><a href="/blogs/user/{{profile.alias}}{{k.alias}}">{{k.alias}}</a>
 
-        {% endfor %}<br>
+            {% endfor %}</p><br>
 
         {% if user.id != logged_in_userprofile.id %}
             {% if is_following %}

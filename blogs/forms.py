@@ -5,12 +5,12 @@ from django import forms
 from django import forms
 from blogs.models import blog
 
-class UserForm(forms.ModelForm):
+class UserForm(forms.ModelForm):                                                  #create form for registration
     password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
-        model = User
-        fields = ('username', 'email', 'password')
+        model = User                                                             #using User django model
+        fields = ('username', 'email', 'password')                               #include or visible fields in form
 
 
 class UserProfileForm(forms.ModelForm):

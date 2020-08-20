@@ -2,33 +2,55 @@
 <html>
 
     <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="description" content="">
+            <meta name="author" content="">
+            <link rel="icon" href="http://getbootstrap.com/favicon.ico">
         <title>blogs</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     </head>
 
-    <body>
-        <h1>blogs </h1>
+    <body style="background-color:DarkGray;">
 
-        <strong>{{ boldmessage }}</strong><br />
+    <h1> blogs </h1>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
 
-        {% if user.is_authenticated %}
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
 
-            <a href="/blogs/restricted/">Restricted Page</a><br />
-            <a href="/blogs/logout/">Logout</a><br />
-            <a href="/blogs/add_blog/">Add a New blog</a><br />
-            <a href="/blogs/user/{{profile.alias}}">Profile</a><br>
 
+            <strong>{{ boldmessage }}</strong><br />
+
+            {% if user.is_authenticated %}
+
+            <li><a href="{% url 'restricted' %}" style="color:Maroon;">Restricted Page</a></li>
+            <li><a href="{% url 'logout' %}" style="color:Maroon;">Logout</a></li>
+            <li><a href="{% url 'add_blog' %}" style="color:Maroon;">Add a New blog</a></li>
+            <li><a href="/blogs/user/{{profile.alias}}" style="color:Maroon;">Profile</a></li><br>
+
+        </div>
+      </div>
+    </div>
             <strong>List of blogs: </strong>
-            {% for i in list_blogs %}
+            <br>{% for i in list_blogs %}
 
-                <br><a href="/blogs/blog/{{ i.slug }}">{{i.title}}</a><br>
+                <a href="/blogs/blog/{{ i.slug }}">{{i.title}}</a><br>
 
             {% endfor %}<br>
 
         {% else %}
-            <a href="/blogs/register/">Register Here</a><br />
-            <a href="/blogs/login/">Login</a><br />
+            <li><a href="{% url 'register' %}">Register Here</a></li>
+            <li><a href="{% url 'login' %}">Logine</a></li>
 
         {% endif %}
 
     </body>
+
 </html>
